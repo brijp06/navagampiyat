@@ -162,7 +162,7 @@ Public Class FrmMemberMasterNew
         ob.Execute("delete LanDetail where code=" & Val(txtmemberid.Text) & "", ob.getconnection())
         ob.Execute("Insert Into member_master (company_id,member_id,Member_name,village_id) values(1," & Val(txtmemberid.Text) & ",N'" & Trim(txtname.Text) & "'," & Val(txtvillageid.Tag) & ")", ob.getconnection())
         For i As Integer = 0 To dg.Rows.Count - 1
-            ob.Execute("Insert Into LanDetail (Code, SrNo, CityName, Blockno, ServeNo, Hektar, Guntha, Area, Season,khatano) values(" & Val(txtmemberid.Text) & "," & Val(dg.Rows(i).Cells(0).Value) & "," & Val(dg.Rows(i).Cells(1).Tag) & "," & Val(dg.Rows(i).Cells(3).Value) & "," & Val(dg.Rows(i).Cells(4).Value) & "," & Val(dg.Rows(i).Cells(5).Value) & "," & Val(dg.Rows(i).Cells(6).Value) & "," & Val(dg.Rows(i).Cells(7).Value) & "," & Val(dg.Rows(i).Cells(8).Tag) & "," & Val(dg.Rows(i).Cells(2).Value) & ")", ob.getconnection())
+            ob.Execute("Insert Into LanDetail (Code, SrNo, CityName, Blockno, ServeNo, Hektar, Guntha, Area, Season,khatano) values(" & Val(txtmemberid.Text) & "," & Val(dg.Rows(i).Cells(0).Value) & "," & Val(dg.Rows(i).Cells(1).Tag) & ",'" & Trim(dg.Rows(i).Cells(3).Value) & "','" & Trim(dg.Rows(i).Cells(4).Value) & "'," & Val(dg.Rows(i).Cells(5).Value) & "," & Val(dg.Rows(i).Cells(6).Value) & "," & Val(dg.Rows(i).Cells(7).Value) & "," & Val(dg.Rows(i).Cells(8).Tag) & "," & Val(dg.Rows(i).Cells(2).Value) & ")", ob.getconnection())
         Next
         MessageBox.Show("Save")
         clear()
@@ -198,17 +198,21 @@ Public Class FrmMemberMasterNew
 
     Private Sub srno_Validating(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles srno.Validating
         If Val(srno.Text) <> 0 Then
-            srno.Text = dg.Rows(srno.Text - 1).Cells(0).Value
-            txtvillagename.Text = dg.Rows(srno.Text - 1).Cells(1).Value
-            txtvillagename.Tag = dg.Rows(srno.Text - 1).Cells(1).Tag
-            txtkhata.Text = dg.Rows(srno.Text - 1).Cells(2).Value
-            txtboxno.Text = dg.Rows(srno.Text - 1).Cells(3).Value
-            txtsrno.Text = dg.Rows(srno.Text - 1).Cells(4).Value
-            txthektar.Text = dg.Rows(srno.Text - 1).Cells(5).Value
-            txtguntha.Text = dg.Rows(srno.Text - 1).Cells(6).Value
-            txtare.Text = dg.Rows(srno.Text - 1).Cells(7).Value
-            txtcolumn.Text = dg.Rows(srno.Text - 1).Cells(8).Value
-            txtcolumn.Tag = dg.Rows(srno.Text - 1).Cells(8).Tag
+            For i As Integer = 0 To dg.Rows.Count - 1
+                If Val(srno.Text) = Val(dg.Rows(i).Cells(0).Value) Then
+                    srno.Text = dg.Rows(srno.Text - 1).Cells(0).Value
+                    txtvillagename.Text = dg.Rows(srno.Text - 1).Cells(1).Value
+                    txtvillagename.Tag = dg.Rows(srno.Text - 1).Cells(1).Tag
+                    txtkhata.Text = dg.Rows(srno.Text - 1).Cells(2).Value
+                    txtboxno.Text = dg.Rows(srno.Text - 1).Cells(3).Value
+                    txtsrno.Text = dg.Rows(srno.Text - 1).Cells(4).Value
+                    txthektar.Text = dg.Rows(srno.Text - 1).Cells(5).Value
+                    txtguntha.Text = dg.Rows(srno.Text - 1).Cells(6).Value
+                    txtare.Text = dg.Rows(srno.Text - 1).Cells(7).Value
+                    txtcolumn.Text = dg.Rows(srno.Text - 1).Cells(8).Value
+                    txtcolumn.Tag = dg.Rows(srno.Text - 1).Cells(8).Tag
+                End If
+            Next
         Else
             ButSave.Focus()
         End If
